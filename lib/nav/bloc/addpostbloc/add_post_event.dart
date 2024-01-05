@@ -16,7 +16,8 @@ class AddPostSubImageSelectedEvent extends AddPostSubEvent {
 
 class AddPostPostEvent extends AddPostSubEvent {
   final Uint8List selectedImage;
-  const AddPostPostEvent(this.selectedImage);
+  final String caption;
+  const AddPostPostEvent(this.selectedImage, this.caption);
 }
 
 class AddPostSubGetImageEvent extends AddPostSubEvent {

@@ -42,6 +42,7 @@ dependencies:
   image_picker: ^1.0.5
   photo_manager: ^2.8.1
   photo_manager_image_provider: ^2.1.0
+  uuid: ^4.2.2
 
 dependency_overrides:
   photo_manager: ^3.0.0-dev.2

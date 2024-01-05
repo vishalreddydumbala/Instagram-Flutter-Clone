@@ -1,6 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:instagram/services/storage/storage_exception.dart';
+import 'package:uuid/uuid.dart';
 
 @immutable
 class StorageFirebase {
@@ -26,5 +27,18 @@ class StorageFirebase {
   Future<String> getProfileImage(String uid) async {
     final ref = _firebaseStorage.ref().child("profile_images").child(uid);
     return await ref.getDownloadURL();
+  }
+
+  Future<String?> uploadPostImage(String uid, Uint8List? image) async {
+    try {
+      if (image == null) return null;
+      String id = const Uuid().v1();
+      final ref = _firebaseStorage.ref().child("post_images").child(uid).child(id);
+      final uploadTask = ref.putData(image);
+      final snapshot = await uploadTask.whenComplete(() => null);
+      return await snapshot.ref.getDownloadURL();
+    } catch (e) {
+      throw CouldNotPostImageException();
+    }
   }
 }

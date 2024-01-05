@@ -19,14 +19,23 @@ class InstagramAddPostView extends StatefulWidget {
 }
 
 class _InstagramAddPostViewState extends State<InstagramAddPostView> {
+  late final TextEditingController _captionController;
   List<AssetEntity>? _imageEntities;
   Uint8List? _selectedImage;
   int? _selectedIndex = 0;
 
   @override
   void initState() {
+    _captionController = TextEditingController();
     context.read<AddPostSubBloc>().add(const AddPostSubInitialEvent());
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _captionController.dispose();
+    super.dispose();
   }
 
   @override
@@ -184,19 +193,79 @@ class _InstagramAddPostViewState extends State<InstagramAddPostView> {
                 ),
                 title: const Text('Post'),
                 centerTitle: false,
-                actions: [
-                  TextButton(
-                      onPressed: () {},
-                      child: const Text(
-                        "Post",
-                        style: TextStyle(
-                          color: Colors.blueAccent,
-                          fontSize: 16,
+              ),
+              body: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ClipRRect(
+                            borderRadius: BorderRadius.circular(16),
+                            child: Image.memory(
+                              _selectedImage!,
+                              height: 400,
+                              width: 400,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            decoration: BoxDecoration(
+                              color: const Color.fromARGB(255, 53, 51, 51),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20),
+                              child: TextField(
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w700),
+                                controller: _captionController,
+                                decoration: const InputDecoration(
+                                  hintText: 'Write your caption...',
+                                  hintStyle: TextStyle(
+                                      color: Colors.white54,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700),
+                                  border: InputBorder.none,
+                                ),
+                                maxLines: 3,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  GestureDetector(
+                    onTap: () {
+                      context.read<AddPostSubBloc>().add(AddPostPostEvent(
+                          state.selectedImage, _captionController.text));
+                    },
+                    child: Container(
+                      height: 50,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: const Center(
+                        child: Text(
+                          'Post',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ))
+                      ),
+                    ),
+                  )
                 ],
               ),
-              body: Text("Submit"),
             );
           } else {
             return const Center(

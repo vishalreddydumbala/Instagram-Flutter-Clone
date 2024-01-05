@@ -9,3 +9,5 @@ class CouldNotUpdateCloudUserException implements CloudException {}
 class CouldNotDeleteCloudUserException implements CloudException {}
 
 class CouldNotLogInCloudUserException implements CloudException {}
+
+class CouldNotCreateCloudPostException implements CloudException {}

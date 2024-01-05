@@ -47,6 +47,8 @@
 	<true/>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Instagram needs gallery acess</string>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>NSCameraUsageDescription</key>
 	<string>Instagram needs camera acess</string>
 	<key>NSMicrophoneUsageDescription</key>

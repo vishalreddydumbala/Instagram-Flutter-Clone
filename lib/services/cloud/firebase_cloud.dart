@@ -8,6 +8,7 @@ import 'package:instagram/services/storage/storage_firebase.dart';
 
 class FirebaseCloud {
   final users = FirebaseFirestore.instance.collection('users');
+  final posts = FirebaseFirestore.instance.collection('posts');
   final storage = StorageFirebase();
 
   static final FirebaseCloud _instance = FirebaseCloud._sharedInstance();
@@ -72,6 +73,25 @@ class FirebaseCloud {
       await users.doc(ownerUid).delete();
     } catch (e) {
       throw CouldNotDeleteCloudUserException();
+    }
+  }
+  
+  Future<void> createNewPost(
+      {required String ownerUid,required String displayName,required String profileImageUrl,required String caption,required Uint8List post}) async {
+    try {
+      final imageUrl = await storage.uploadPostImage(ownerUid, post);
+      await posts.add(
+        {
+          postUid: ownerUid,
+          postDisplayName: displayName,
+          postProfileImageUrl: profileImageUrl,
+          postCaption: caption,
+          postImageUrl: imageUrl,
+          postDatePublished: DateTime.now().toUtc().toString(),
+        },
+      );
+    } catch (e) {
+      throw CouldNotCreateCloudPostException();
     }
   }
 }
